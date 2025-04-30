@@ -12,15 +12,21 @@ def aspect(fn):
 
 def aspectf(fn):
   """
-  Decorator that converts a plain decorator function into an `Aspect`
-  instance, so you can write:
+  Decorator that transforms a *plain* `(func, *args, **kwargs)` handler into
+  • a standard decorator (via `@aspect` internally), **and**
+  • an `Aspect` instance that supports `|` composition.
+
+  Usage:
 
       @aspectf
-      def log(func): ...
+      def log(func, *args, **kwargs):
+          ...
 
-  and `log` will be an `Aspect` that supports `|` composition.
+  After decoration, `log` is an `Aspect`, so you can compose:
+
+      core = log | auth | core
   """
-  return Aspect(fn)
+  return Aspect(aspect(fn))
 
 
 class Aspect:

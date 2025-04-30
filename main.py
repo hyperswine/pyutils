@@ -2,21 +2,17 @@ from pyutils.aop import Aspect, aspectf
 
 
 @aspectf
-def log(func):
-  def wrapper(*args, **kwargs):
-    print(f"[LOG] Calling {func.__name__} with {args} {kwargs}")
-    result = func(*args, **kwargs)
-    print(f"[LOG] {func.__name__} returned {result}")
-    return result
-  return wrapper
+def log(func, *args, **kwargs):
+  print(f"[LOG] Calling {func.__name__} with {args} {kwargs}")
+  result = func(*args, **kwargs)
+  print(f"[LOG] {func.__name__} returned {result}")
+  return result
 
 
 @aspectf
-def auth(func):
-  def wrapper(*args, **kwargs):
-    print("[AUTH] Checking user permissions...")
-    return func(*args, **kwargs)
-  return wrapper
+def auth(func, *args, **kwargs):
+  print("[AUTH] Checking user permissions...")
+  return func(*args, **kwargs)
 
 
 # Define your core logic
