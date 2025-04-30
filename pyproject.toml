@@ -1,0 +1,10 @@
+[project]
+name = "pyutils"
+version = "0.1.0"
+description = "Jasen's Utils"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.autopep8]
+indent-size = 2
