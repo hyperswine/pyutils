@@ -57,3 +57,12 @@ def pipe(func):
       p(5)  # => 12
   """
   return Pipe(func)
+
+def _id(x):
+  """Identity function: returns its argument unchanged."""
+  return x
+
+P = Pipe(_id)
+begin = P  # alias for more semantic readability
+ρ = P
+id = Pipe(_id)
