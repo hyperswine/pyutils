@@ -10,27 +10,37 @@ def aspect(fn):
   return decorator
 
 
-class Aspect:
+def aspectf(fn):
   """
-  Aspect(func) wraps a decorator-like function and allows composition using the | operator.
-  You can define aspects like:
+  Decorator that converts a plain decorator function into an `Aspect`
+  instance, so you can write:
 
-      @Aspect
+      @aspectf
       def log(func): ...
 
-      @Aspect
-      def auth(func): ...
-
-  Then apply them like:
-      core_logic = log | auth | core_logic
+  and `log` will be an `Aspect` that supports `|` composition.
   """
-  def __init__(self, func):
-    self.func = func
+  return Aspect(fn)
 
+
+class Aspect:
+  def __init__(self, fn):          # fn: decorator
+    self.fn = fn
+
+  # combine two aspects → new Aspect
   def __or__(self, other):
-    if callable(other):
-      return self.func(other)
-    raise TypeError(f"Cannot compose Aspect with non-callable: {type(other)}")
+    if isinstance(other, Aspect):
+      def composed(f):
+        return self.fn(other.fn(f))
+      return Aspect(composed)
+    elif callable(other):        # last step: apply to function
+      return self.fn(other)
+    else:
+      raise TypeError
 
-  def __call__(self, func):
-    return self.func(func)
+  # allow plain function | Aspect  (optional)
+  def __ror__(self, other):
+    if callable(other):
+      return self.fn(other)
+    else:
+      raise TypeError
