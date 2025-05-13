@@ -1,4 +1,5 @@
 from pyutils.aop import Aspect, aspectf
+from pyutils.fn import curry
 
 
 @aspectf
@@ -34,3 +35,16 @@ def main():
 
 if __name__ == "__main__":
   main()
+
+  @curry
+  def myfunc(a, b, c, d, e):
+    return a + b + c + d + e
+
+  x = myfunc(1)(2)
+  print(x)
+
+  x = myfunc(1)(2)(5)(61)(55)
+  print(x)
+
+  y = myfunc(1,2,4,6,9)
+  print(y)

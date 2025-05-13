@@ -6,9 +6,12 @@ def curry(func):
   total_params = len(sig.parameters)
 
   def _curried(*args):
-    if len(args) >= total_params:
-      return func(*args)
-    return lambda x: _curried(*args, x)
+    return (func(*args) if len(args) >= total_params else lambda x: _curried(*args, x))
+
+    # if len(args) >= total_params:
+    #   return func(*args)
+    # else:
+    #   return lambda x: _curried(*args, x)
 
   return _curried
 
